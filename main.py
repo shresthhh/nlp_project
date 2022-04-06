@@ -44,20 +44,20 @@ from fastapi import FastAPI
 # seeding
 np.random.seed(123)
 
-df = pd.read_csv("labeled_data.csv")
+df = pd.read_csv("final.csv")
 print(df.shape)
 
 # Dropping all columns except Class and Tweet. 
 
 # Class: 
 
-# 2 -> Either
+# 2 -> Neither
 
 # 1 -> Offensive Language
 
 # 0 -> hate_speech
 
-df = df.drop(['Unnamed: 0', 'count', 'hate_speech', 'offensive_language', 'neither'], axis=1)
+#df = df.drop(['Unnamed: 0', 'count', 'hate_speech', 'offensive_language', 'neither'], axis=1)
 
 stop_words =  stopwords.words('english')
 def text_cleaning(text, remove_stop_words=True, lemmatize_words=True):
@@ -87,10 +87,10 @@ def text_cleaning(text, remove_stop_words=True, lemmatize_words=True):
     # Return a list of words
     return(text)
 
-df["cleaned_tweet"] = df["tweet"].apply(text_cleaning)
+df["cleaned_tweet"] = df["text"].apply(text_cleaning)
 
 X = df["cleaned_tweet"]
-y = df['class'].values
+y = df['label'].values
 
 print(df.head())
 print(y)
