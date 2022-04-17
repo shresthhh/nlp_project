@@ -21,7 +21,10 @@ app = FastAPI(
 with open(
     join(dirname(realpath(__file__)), "sentiment_model_pipeline.pkl"), "rb"
 ) as f:
-    model = joblib.load(f)
+    model = joblib.load(f) ## Load the model
+
+## We need to clean the text again becuase the user will enter the sentence in the form of a string instead of numbers.
+## The sentence needs to be cleaned before it is passed to the model.
 
 def text_cleaning(text):
     # Clean the text, with the option to remove stop_words and to lemmatize word
@@ -64,6 +67,7 @@ def predict_sentiment(review: str):
     print(cleaned_review)
     # perform prediction
     prediction = model.predict([cleaned_review])
+    ## We pass the sentence through the pipeline, i.e first tf-idf is done then model predictions are made.
     prediction = prediction.tolist()
     print(prediction[0])
     judgements = {2: "Normal", 1: "Offensive Language", 0: "Hate Speech"}
